@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { HeroLocation } from "@components/icons";
+import DynamicWeatherIcon from "@components/icons/dynamicweathericon";
 import { Weather } from "@datatypes/weather";
 import { GetStaticPropsResult, GetStaticPropsContext } from "next";
 import data from "@data/data.json";
@@ -12,12 +13,16 @@ interface HomeProps {
 export async function getStaticProps(
   _context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<HomeProps>> {
-  return { props: { weather: data } };
+  return {
+    props: {
+      weather: { ...data, current_weather: data.consolidated_weather.shift() },
+    },
+  };
 }
 
 export default function Home({ weather }: HomeProps) {
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
+    <div className="flex flex-col lg:flex-row min-h-screen  font-raleway">
       <div className="w-full lg:w-1/3 bg-navy flex flex-col items-center">
         <div className="w-full flex flex-row justify-between px-8 mt-8 justify-self-start">
           <button className="bg-gray-500 shadow-lg text-white px-4 py-2">
@@ -35,14 +40,18 @@ export default function Home({ weather }: HomeProps) {
             backgroundSize: "100% 120%",
           }}
         >
-          <img src="/Shower.png" className="m-auto" />
+          <DynamicWeatherIcon
+            weatherType={weather.current_weather.weather_state_abbr}
+            className="m-auto"
+          />
         </div>
         <div className="flex flex-col justify-between p-5 h-full">
           <h2 className="text-9xl text-gray-300 text-center">
-            15<span className="text-7xl text-gray-400">˚c</span>
+            {Math.round(weather.current_weather.the_temp)}
+            <span className="text-7xl text-gray-400">˚c</span>
           </h2>
           <span className="text-4xl text-gray-400 text-center my-auto">
-            Shower
+            {weather.current_weather.weather_state_name}
           </span>
           <span className="text-lg text-gray-400 text-center my-3">
             Today · Fri, 5 Jun
@@ -53,7 +62,7 @@ export default function Home({ weather }: HomeProps) {
           </span>
         </div>
       </div>
-      <div className="w-full lg:w-2/3 bg-navy-dark flex flex-col justify-start items-center px-6 py-3">
+      <div className="w-full lg:w-2/3 bg-navy-dark flex flex-col justify-evenly items-center px-6 lg:px-36 py-3">
         <div className="flex flex-row self-end text-2xl">
           <span className="m-3 px-3 py-2 rounded-full bg-gray-300 font-bold">
             ˚C
@@ -65,25 +74,31 @@ export default function Home({ weather }: HomeProps) {
         <div className="flex flex-row justify-evenly w-full">
           {weather.consolidated_weather.map((cw, i, l) => (
             <div
+              key={cw.id}
               className={classNames(
-                "w-1/5 bg-navy text-white flex flex-col px-4 py-3",
+                "w-1/5 bg-navy text-white flex flex-col px-2 py-3",
                 {
-                  "mx-2": i > 0 && i < l.length - 1,
-                  "mr-2": i == 0,
-                  "ml-2": i == l.length - 1,
+                  "mx-4": i > 0 && i < l.length - 1,
+                  "mr-4": i == 0,
+                  "ml-4": i == l.length - 1,
                 }
               )}
             >
-              <span className="text-center">
-                {dayjs(cw.applicable_date).format("dddd")}
+              <span className="text-center text-xl">
+                {i == 0
+                  ? "Tomorrow"
+                  : dayjs(cw.applicable_date).format("ddd, D MMM")}
               </span>
-              <div className="p-2">
-                <img src="/Shower.png" className="m-auto" />
+              <div className="p-7">
+                <DynamicWeatherIcon
+                  weatherType={cw.weather_state_abbr}
+                  className="m-auto"
+                />
               </div>
-              <div className="grid grid-cols-2 gap-5 text-sm mt-2">
-                <span className="text-center">{cw.max_temp.toFixed(2)}˚C</span>
+              <div className="grid grid-cols-2 text-xl mt-auto">
+                <span className="text-center">{Math.round(cw.max_temp)}˚C</span>
                 <span className="text-gray-400 text-center">
-                  {cw.min_temp.toFixed(2)}˚C
+                  {Math.round(cw.min_temp)}˚C
                 </span>
               </div>
             </div>
@@ -120,37 +135,19 @@ export default function Home({ weather }: HomeProps) {
             <div className="relative pt-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    0
-                  </span>
+                  <span className="text-xs inline-block text-white">0</span>
                 </div>
                 <div>
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    25
-                  </span>
-                </div>
-                <div>
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    50
-                  </span>
-                </div>
-                <div>
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    75
-                  </span>
+                  <span className="text-xs inline-block text-white">50</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    100
-                  </span>
+                  <span className="text-xs inline-block text-white">100</span>
                 </div>
               </div>
               <div className="overflow-hidden h-1 text-xs flex rounded bg-yellow-200"></div>
               <div className="flex items-center justify-end">
                 <div className="text-right">
-                  <span className="text-xs font-semibold inline-block text-yellow-600">
-                    %
-                  </span>
+                  <span className="text-xs inline-block text-white">%</span>
                 </div>
               </div>
             </div>
@@ -177,6 +174,12 @@ export default function Home({ weather }: HomeProps) {
               <span className="text-3xl text-gray-300 align-middle">mb</span>
             </div>
           </div>
+        </div>
+        <div className="justify-self-end">
+          <p className="text-center text-gray-300">
+            created by <span className="font-bold underline">mxdevmanuel</span>{" "}
+            - devChallenges.io
+          </p>
         </div>
       </div>
     </div>

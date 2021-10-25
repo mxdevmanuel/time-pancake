@@ -35,6 +35,7 @@ export interface Weather {
   sun_rise: string;
   sun_set: string;
   timezone_name: string;
+  current_weather: ConsolidatedWeather;
   consolidated_weather: ConsolidatedWeather[];
   parent: IParent;
   sources: ISource[];
