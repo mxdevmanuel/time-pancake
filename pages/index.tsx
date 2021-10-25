@@ -115,10 +115,10 @@ export default function Home({ weather }: HomeProps) {
               Wind Status
             </span>
             <div className="mx-auto">
-              <span className="text-5xl text-white text-center font-bold my-1 align-middle">
+              <span className="text-5xl text-white text-center font-bold my-1">
                 7
               </span>
-              <span className="text-3xl text-gray-300 align-middle">mph</span>
+              <span className="text-3xl text-gray-300">mph</span>
             </div>
             <span className="text-sm text-white text-center my-1">WSW</span>
           </div>
