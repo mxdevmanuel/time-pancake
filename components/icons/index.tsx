@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 export function HeroLocation({
   className = "h-6 w-6",
 }: {
@@ -27,10 +28,17 @@ export function HeroLocation({
   );
 }
 
-export function SVGLocation({ className = "h-4 w-4" }: { className?: string }) {
+export function SVGLocation({
+  className = "h-4 w-4",
+  style,
+}: {
+  className?: string;
+  style?: CSSProperties;
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      style={style}
       className={className}
       fill="#fff"
       viewBox="0 0 460.047 430.047"

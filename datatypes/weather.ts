@@ -16,14 +16,15 @@ export interface ConsolidatedWeather {
   predictability: number;
 }
 
-export interface IParent {
+export interface Location {
   title: string;
   location_type: string;
   woeid: number;
   latt_long: string;
+  distance?: number;
 }
 
-export interface ISource {
+export interface Source {
   title: string;
   slug: string;
   url: string;
@@ -37,8 +38,8 @@ export interface Weather {
   timezone_name: string;
   current_weather: ConsolidatedWeather;
   consolidated_weather: ConsolidatedWeather[];
-  parent: IParent;
-  sources: ISource[];
+  parent: Location;
+  sources: Source[];
   title: string;
   location_type: string;
   woeid: number;

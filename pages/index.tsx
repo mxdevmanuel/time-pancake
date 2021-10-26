@@ -1,23 +1,25 @@
-import dayjs from "dayjs";
-import Head from "next/head";
-import { Fragment } from "react";
-import classNames from "classnames";
-import { HeroLocation, SVGTarget, SVGLocation } from "@components/icons";
 import DynamicWeatherIcon from "@components/icons/dynamicweathericon";
+import Head from "next/head";
+import PointsOfCompass from "@components/pointsofcompass";
+import classNames from "classnames";
+import dayjs from "dayjs";
+import { Fragment } from "react";
+import { GetServerSidePropsResult, GetServerSidePropsContext } from "next";
+import { HeroLocation, SVGTarget } from "@components/icons";
 import { Weather } from "@datatypes/weather";
-import { GetStaticPropsResult, GetStaticPropsContext } from "next";
-import data from "@data/data.json";
+import { WeatherClient } from "@data/weather";
 
 interface HomeProps {
   weather: Weather;
 }
 
-export async function getStaticProps(
-  _context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<HomeProps>> {
+export async function getServerSideProps(
+  _context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<HomeProps>> {
+  const client = new WeatherClient();
   return {
     props: {
-      weather: { ...data, current_weather: data.consolidated_weather.shift() },
+      weather: await client.getWeather("44418"),
     },
   };
 }
@@ -115,7 +117,7 @@ export default function Home({ weather }: HomeProps) {
               </div>
             ))}
           </div>
-          <div className="w-full py-5">
+          <div className="w-full py-5 2xl:mt-14">
             <span className="text-left text-white text-2xl">
               Today's highlights
             </span>
@@ -133,7 +135,9 @@ export default function Home({ weather }: HomeProps) {
               </div>
               <div className="flex flex-row place-content-center align-middle mt-5">
                 <span className="bg-gray-500 rounded-full p-2 mx-2">
-                  <SVGLocation />
+                  <PointsOfCompass
+                    direction={weather.current_weather.wind_direction_compass}
+                  />
                 </span>
                 <span className="text-md text-white text-center my-auto">
                   {weather.current_weather.wind_direction_compass}
