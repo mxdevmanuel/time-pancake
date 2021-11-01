@@ -5,7 +5,7 @@ import {
 import DynamicWeatherIcon from "@components/icons/dynamicweathericon";
 import Head from "next/head";
 import PointsOfCompass from "@components/pointsofcompass";
-import classNames from "classnames";
+import classNames from "clsx";
 import dayjs from "dayjs";
 import { Fragment } from "react";
 import { GetServerSidePropsResult, GetServerSidePropsContext } from "next";
