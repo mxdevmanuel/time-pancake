@@ -20,7 +20,7 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<HomeProps>> {
   const client = new WeatherClient();
-  let woeid: string = (context.query.woeid as string) ?? "44418";
+  const woeid: string = (context.query.woeid as string) ?? "44418";
   return {
     props: {
       weather: await client.getWeather(woeid),
@@ -39,10 +39,9 @@ export default function Home({ weather }: HomeProps) {
         client
           .locationLatLongSearch(coords.latitude, coords.longitude)
           .then((loc: Location[]) => {
-            let curr = loc[0];
+            const curr = loc[0];
             if (curr) {
               router.push({ pathname: "/", query: { woeid: curr.woeid } });
-            } else {
             }
           });
       });
