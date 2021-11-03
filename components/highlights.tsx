@@ -13,7 +13,7 @@ export default function Highlights({ weather }: HighlightsProps) {
           Today's highlights
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-12 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-12 w-full">
         <div className="bg-navy flex flex-col justify-evenly px-16 py-3">
           <span className="text-sm text-white text-center my-1">
             Wind Status

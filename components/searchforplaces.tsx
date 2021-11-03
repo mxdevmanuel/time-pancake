@@ -14,7 +14,7 @@ export default function SearchForPlaces(_props: SearchForPlacesProps) {
   const router = useRouter();
 
   return (
-    <div className="w-1/3 bg-navy">
+    <div className="w-full lg:w-1/3 bg-navy h-screen lg:min-h-screen">
       <div className="flex flex-col justify-start items-center w-full px-10">
         <div className="relative p-3 w-full h-11">
           <span

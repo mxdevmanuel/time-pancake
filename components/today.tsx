@@ -15,7 +15,7 @@ interface TodayProps {
 export default function Today({ weather, fahrenheit }: TodayProps) {
   const context: IGlobalContext = useContext(GlobalContext);
   return (
-    <div className="w-full md:w-1/3 bg-navy flex flex-col items-center">
+    <div className="w-full md:w-1/3 bg-navy flex flex-col items-center min-h-screen lg:min-h-0">
       <div className="w-full flex flex-row justify-between px-8 mt-8 justify-self-start">
         <button
           onClick={() => context.showSearch(true)}

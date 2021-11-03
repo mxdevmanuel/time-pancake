@@ -60,7 +60,7 @@ export default function Home({ weather }: HomeProps) {
           ) : (
             <Today weather={weather} fahrenheit={fahrenheit} />
           )}
-          <div className="w-full min-h-screen md:w-2/3 bg-navy-dark">
+          <div className="w-full min-h-screen px-5 lg:px-0 md:w-2/3 bg-navy-dark">
             <div className="h-full md:w-4/5 2xl:w-3/5 flex flex-col justify-evenly items-center mx-auto py-3">
               <UnitSelector
                 fahrenheit={fahrenheit}
