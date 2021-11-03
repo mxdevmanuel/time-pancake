@@ -1,23 +1,29 @@
+import { useContext } from "react";
 import { conditionalCelciusToFahrenheit as cctf } from "@utils/degreeconvertion";
 import { Weather } from "@datatypes/weather";
-import { HeroLocation, SVGTarget } from "@components/icons";
+import { GlobalContext, IGlobalContext } from "@data/globalcontext";
+import { HeroLocation } from "@components/icons";
+import FindCurrentLocation from "@components/findcurrentlocation";
 import DynamicWeatherIcon from "@components/icons/dynamicweathericon";
 import dayjs from "dayjs";
+
 interface TodayProps {
   weather: Weather;
   fahrenheit: boolean;
 }
 
 export default function Today({ weather, fahrenheit }: TodayProps) {
+  const context: IGlobalContext = useContext(GlobalContext);
   return (
     <div className="w-full md:w-1/3 bg-navy flex flex-col items-center">
       <div className="w-full flex flex-row justify-between px-8 mt-8 justify-self-start">
-        <button className="bg-gray-500 shadow-lg text-white px-4 py-2">
+        <button
+          onClick={() => context.showSearch(true)}
+          className="bg-gray-500 shadow-lg text-white px-4 py-2"
+        >
           Search for places
         </button>
-        <button className="rounded-full shadow-lg bg-gray-500 p-2 text-white">
-          <SVGTarget />
-        </button>
+        <FindCurrentLocation />
       </div>
       <div
         className="container h-full flex "

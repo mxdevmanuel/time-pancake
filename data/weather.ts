@@ -2,26 +2,33 @@ import { Weather, Location } from "@datatypes/weather";
 import { AxiosResponse } from "axios";
 import HttpClient from "@data/client";
 
+const base =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/"
+    : "https://mysterious-plateau-95225.herokuapp.com";
+
 export class WeatherClient extends HttpClient {
   public constructor() {
-    super("https://www.metaweather.com/api");
+    // A cors proxy for the metaweather api
+    super(base);
   }
 
   public async locationQuerySearch(query: string): Promise<Location[]> {
     let response: AxiosResponse<Location[]> = await this.instance.get<
       Location[]
-    >("/location/search", {
+    >("/location", {
       params: { query },
     });
     return response.data;
   }
+
   public async locationLatLongSearch(
     latt: number,
     long: number
   ): Promise<Location[]> {
     let response: AxiosResponse<Location[]> = await this.instance.get<
       Location[]
-    >("/location/search", {
+    >("/lattlong", {
       params: { lattlong: `${latt},${long}` },
     });
     return response.data;
@@ -29,7 +36,8 @@ export class WeatherClient extends HttpClient {
 
   public async getWeather(woeid: string): Promise<Weather> {
     let { data }: AxiosResponse<Weather> = await this.instance.get<Weather>(
-      `/location/${woeid}`
+      `/weather`,
+      { params: { woeid } }
     );
     return { ...data, current_weather: data.consolidated_weather.shift() };
   }
