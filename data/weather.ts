@@ -14,7 +14,7 @@ export class WeatherClient extends HttpClient {
   }
 
   public async locationQuerySearch(query: string): Promise<Location[]> {
-    let response: AxiosResponse<Location[]> = await this.instance.get<
+    const response: AxiosResponse<Location[]> = await this.instance.get<
       Location[]
     >("/location", {
       params: { query },
@@ -26,7 +26,7 @@ export class WeatherClient extends HttpClient {
     latt: number,
     long: number
   ): Promise<Location[]> {
-    let response: AxiosResponse<Location[]> = await this.instance.get<
+    const response: AxiosResponse<Location[]> = await this.instance.get<
       Location[]
     >("/lattlong", {
       params: { lattlong: `${latt},${long}` },
@@ -35,7 +35,7 @@ export class WeatherClient extends HttpClient {
   }
 
   public async getWeather(woeid: string): Promise<Weather> {
-    let { data }: AxiosResponse<Weather> = await this.instance.get<Weather>(
+    const { data }: AxiosResponse<Weather> = await this.instance.get<Weather>(
       `/weather`,
       { params: { woeid } }
     );
